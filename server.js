@@ -24,16 +24,20 @@ app.get("/api/timestamp/", function (req, res) {
   res.json({unix: Date.now(),utc:Date()});
 });
 
-app.get("/api/timestamp/:dateString", function (req, res) {
+app.get("/api/timestamp/:date_String", function (req, res) {
   
-  let dateString = req.params.dateString;
+  let dateString = req.params.date_String;
   
   if(/\d{5,}/.test(dateString)){
-    res.json({unix:parseInt(dateString),utc:new Date(parseInt(dateString)).toUTCString()});
+    res.json({ unix : dateString , utc : new Date(parseInt(dateString)).toUTCString() });
   }
   
   let dateObject = new Date(dateString);
-  res.json = dateObject.toString() === "Invalid Date" ? {error:"Invalid Date"} : { unix:dateObject.valueOf(),utc: dateObject.toUTCString()};
+   if (dateObject.toString() === "Invalid Date") {
+        res.json({ error: "Invaid Date" });
+   } else {
+    res.json({ unix: dateObject.valueOf(), utc: dateObject.toUTCString() });
+  }
 });
 
 
